@@ -24,9 +24,16 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+#ifdef HAVE_X11
+#undef HAVE_X11
+#endif
 
 #include <gtk/gtk.h>
+#ifdef HAVE_X11
 #include <gdk/gdkx.h>
+#else
+#include <gdk/gdk.h>
+#endif
 #include <stdio.h>
 #include <glib/gi18n.h>
 
@@ -45,8 +52,6 @@
 #include "pref.h"
 #include "pcmanfm.h"
 #include "single-inst.h"
-
-#include "dummy_x11_func.h"
 
 static int signal_pipe[2] = {-1, -1};
 static gboolean daemon_mode = FALSE;
@@ -225,7 +230,9 @@ int main(int argc, char** argv)
     inst.prog_name = "pcmanfm";
     inst.cb = single_inst_cb;
     inst.opt_entries = opt_entries + 3;
+#ifdef HAVE_X11
     inst.screen_num = gdk_x11_get_default_screen();
+#endif
     switch(single_inst_init(&inst))
     {
     case SINGLE_INST_CLIENT: /* we're not the first instance. */
@@ -527,6 +534,7 @@ void pcmanfm_unref()
         gtk_main_quit();
 }
 
+#ifdef HAVE_X11
 static void move_window_to_desktop(FmMainWin* win, FmDesktop* desktop)
 {
     GdkScreen* screen = gtk_widget_get_screen(GTK_WIDGET(desktop));
@@ -554,6 +562,7 @@ static void move_window_to_desktop(FmMainWin* win, FmDesktop* desktop)
                (SubstructureNotifyMask | SubstructureRedirectMask),
                (XEvent *) &xev);
 }
+#endif
 
 gboolean pcmanfm_open_folder(GAppLaunchContext* ctx, GList* folder_infos, gpointer user_data, GError** err)
 {
@@ -577,8 +586,10 @@ gboolean pcmanfm_open_folder(GAppLaunchContext* ctx, GList* folder_infos, gpoint
         FmFileInfo* fi = (FmFileInfo*)l->data;
         fm_main_win_open_in_last_active(fm_file_info_get_path(fi));
     }
+#ifdef HAVE_X11
     if(user_data && FM_IS_DESKTOP(user_data))
         move_window_to_desktop(fm_main_win_get_last_active(), user_data);
+#endif
     return TRUE;
 }
 

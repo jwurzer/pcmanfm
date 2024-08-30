@@ -46,6 +46,8 @@
 #include "pcmanfm.h"
 #include "single-inst.h"
 
+#include "dummy_x11_func.h"
+
 static int signal_pipe[2] = {-1, -1};
 static gboolean daemon_mode = FALSE;
 static gboolean first_run = TRUE;

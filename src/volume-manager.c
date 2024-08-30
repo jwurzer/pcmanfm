@@ -27,7 +27,7 @@
 #include "volume-manager.h"
 #include <libfm/fm-gtk.h>
 #include <glib/gi18n.h>
-#include <gio/gdesktopappinfo.h>
+#include "gdesktopappinfo_wrapper.h"
 #include "pcmanfm.h"
 #include "main-win.h"
 #include "app-config.h"

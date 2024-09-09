@@ -2101,8 +2101,10 @@ static void paint_rubber_banding_rect(FmDesktop* self, cairo_t* cr, GdkRectangle
 static void _free_cache_image(FmBackgroundCache *cache)
 {
 #if GTK_CHECK_VERSION(3, 0, 0)
+#ifdef HAVE_X11
     XFreePixmap(cairo_xlib_surface_get_display(cache->bg),
                 cairo_xlib_surface_get_drawable(cache->bg));
+#endif
     cairo_surface_destroy(cache->bg);
 #else
     g_object_unref(cache->bg);

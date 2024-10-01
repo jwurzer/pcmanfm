@@ -24,9 +24,6 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
-#ifdef HAVE_X11
-#undef HAVE_X11
-#endif
 
 #include <gtk/gtk.h>
 #ifdef HAVE_X11

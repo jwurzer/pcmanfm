@@ -38,8 +38,10 @@
 #include <gdk/gdk.h>
 #endif
 #include <gdk/gdkkeysyms.h>
+#ifdef HAVE_X11
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
+#endif
 #include <math.h>
 
 #ifdef HAVE_X11
@@ -5078,9 +5080,11 @@ static void fm_desktop_class_init(FmDesktopClass *klass)
 {
     GtkWidgetClass* widget_class = GTK_WIDGET_CLASS(klass);
     typedef gboolean (*DeleteEvtHandler) (GtkWidget*, GdkEventAny*);
+#ifdef HAVE_X11
     char* atom_names[] = {"_NET_WORKAREA", "_NET_NUMBER_OF_DESKTOPS",
                           "_NET_CURRENT_DESKTOP", "_XROOTMAP_ID", "_XROOTPMAP_ID"};
     Atom atoms[G_N_ELEMENTS(atom_names)] = {0};
+#endif
     GObjectClass* object_class = G_OBJECT_CLASS(klass);
 
 #if GTK_CHECK_VERSION(3, 0, 0)

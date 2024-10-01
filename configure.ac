@@ -48,6 +48,12 @@ AC_ARG_ENABLE(debug,
     [enable_debug="${enableval}"],
     [enable_debug=no])
 
+AC_ARG_ENABLE(quartz,
+    [AC_HELP_STRING([--enable-quartz],
+        [build pcmanfm with quartz support @<:@default=no@:>@])],
+    [enable_quartz="${enableval}"],
+    [enable_quartz=no])
+
 if test "$enable_debug" = "yes"; then
     # turn on debug and disable optimization
     CPPFLAGS="$CPPFLAGS -DG_ENABLE_DEBUG -O0 -g"
@@ -86,9 +92,11 @@ AC_ARG_WITH(gtk,
 
 # Checks for libraries.
 
-PKG_CHECK_MODULES(XLIB, "x11")
-AC_SUBST(XLIB_CFLAGS)
-AC_SUBST(XLIB_LIBS)
+AS_IF([test "x$enable_quartz" != "xyes"], [
+    PKG_CHECK_MODULES(XLIB, "x11")
+    AC_SUBST(XLIB_CFLAGS)
+    AC_SUBST(XLIB_LIBS)
+])
 
 gio_modules="gthread-2.0 gio-unix-2.0 >= 2.18.0"
 PKG_CHECK_MODULES(GIO, [$gio_modules])

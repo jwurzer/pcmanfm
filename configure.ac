@@ -93,7 +93,9 @@ AC_ARG_WITH(gtk,
 # Checks for libraries.
 
 AS_IF([test "x$enable_quartz" != "xyes"], [
+    #PKG_CHECK_MODULES(XLIB, "x11", [AC_DEFINE(HAVE_X11, 1, [Support for X11])], [:])
     PKG_CHECK_MODULES(XLIB, "x11")
+    AC_DEFINE(HAVE_X11, 1, [Support for X11])
     AC_SUBST(XLIB_CFLAGS)
     AC_SUBST(XLIB_LIBS)
 ])
